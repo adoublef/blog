@@ -1,5 +1,5 @@
 /** @jsx h */
-import blog, { ga, redirects, h } from "blog";
+import blog, { ga, redirects, h, configureBlog } from "blog";
 
 blog({
     title: "adoublef",
@@ -11,9 +11,14 @@ blog({
     avatarClass: "rounded-full",
     author: "Kristopher Rahim Afful-Brown",
     links: [
+        { title: "Email", url: "mailto:kristopherab@gmail.com" },
         { title: "GitHub", url: "https://github.com/adoublef" },
         { title: "LinkedIn", url: "https://linkedin.com/in/kraffulbrown" },
     ],
+    lang: "en",
+    // localised format based on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat
+    dateFormat: (date) =>
+        new Intl.DateTimeFormat("en-GB", { dateStyle: "long" }).format(date),
     // middlewares: [
 
     // If you want to set up Google Analytics, paste your GA key here.
