@@ -15,8 +15,14 @@ blog({
         { title: "GitHub", url: "https://github.com/adoublef" },
         { title: "LinkedIn", url: "https://linkedin.com/in/kraffulbrown" },
     ],
+    favicon: "static/favicon.png",
     theme: "auto",
     lang: "en",
+    // style: `
+    //     html {
+    //         font-family: sans;
+    //     }
+    // `,
     // localised format based on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat
     dateFormat: (date) =>
         new Intl.DateTimeFormat("en-GB", { dateStyle: "long" }).format(date),
