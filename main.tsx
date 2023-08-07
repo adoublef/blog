@@ -7,7 +7,7 @@ blog({
     // header: <header>Your custom header</header>,
     // section: (post: Post) => <section>Your custom section with access to Post props.</section>,
     // footer: <footer>Your custom footer</footer>,
-    avatar: "static/avatar.jpg",
+    avatar: "static/avatar-1.jpg",
     avatarClass: "rounded-full",
     author: "Kristopher Rahim Afful-Brown",
     links: [
