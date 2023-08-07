@@ -18,11 +18,11 @@ blog({
     favicon: "static/favicon.png",
     theme: "auto",
     lang: "en",
-    // style: `
-    //     html {
-    //         font-family: sans;
-    //     }
-    // `,
+    style: `
+        html {
+            background-color: #FFF5F9;
+        }
+    `,
     // localised format based on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat
     dateFormat: (date) =>
         new Intl.DateTimeFormat("en-GB", { dateStyle: "long" }).format(date),
