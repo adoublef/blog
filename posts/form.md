@@ -32,7 +32,7 @@ There are limitations though. What if an email already exists. What if we had a 
 
 As stated in the setup, we know that can author how html views using JavaScript library, enabling a better developer experiences than using the DOM APIs directly. Here we have a *React component* that renders an unstyled form with a single input element.
 
-```jsx
+```js
 const MyData = z.object({
   foobar: z.string().email(),
 });
