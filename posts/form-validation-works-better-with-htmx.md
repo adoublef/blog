@@ -23,19 +23,19 @@ The client, in our case the browser, has some built in validation that can be ha
 
 ```html
 <form action="/" method="post">
-  <label htmlFor="email">
-    <span>Email</span>
-    <input type="email" name="email" required>
-  </label>
-  <label htmlFor="password">
-    <span>Password</span>
-    <input type="text" name="password" required>
-  </label>
-  <label htmlFor="bio">
-    <span>Bio</span>
-    <textarea type="text" name="bio"></textarea>
-  </label>
-  <input type="submit" value="Submit">
+    <label htmlFor="email">
+        <span>Email</span>
+        <input type="email" name="email" required>
+    </label>
+    <label htmlFor="password">
+        <span>Password</span>
+        <input type="text" name="password" required>
+    </label>
+    <label htmlFor="bio">
+        <span>Bio</span>
+        <textarea type="text" name="bio"></textarea>
+    </label>
+    <input type="submit" value="Submit">
 </form>
 ```
 
@@ -51,57 +51,57 @@ As stated in the setup, we know that can author how html views using JavaScript 
 
 ```js
 const User = z.object({
-  email: z.string().email(),
-  password: z.string()min(6).max(20).refine(passwordRegex),
-  bio: z.string().optional(),
+    email: z.string().email(),
+    password: z.string()min(6).max(20).refine(passwordRegex),
+    bio: z.string().optional(),
 });
 
 function MyForm() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [bio, setBio] = useState("")
-  const [errors, setErrors] = useState()
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [bio, setBio] = useState("")
+    const [errors, setErrors] = useState()
 
-  const submit = (evt) => {
-    evt.preventDefault()
+    const submit = (evt) => {
+        evt.preventDefault()
 
-    const result = User.safeParse({ email, password, bio })
-    if (!result.success) {
-      // ...handle error case
-      setErrors(result.error)
-    } else {
-      // ...handle success case
-      await fetch("api.example.com/", {
-        method: "post",
-        body: JSON.stringify(result.data)
-      })
+        const result = User.safeParse({ email, password, bio })
+        if (!result.success) {
+            // ...handle error case
+            setErrors(result.error)
+        } else {
+        // ...handle success case
+            await fetch("api.example.com/", {
+                method: "post",
+                body: JSON.stringify(result.data)
+            })
+        }
     }
-  }
 
-  return (
-    <form onSubmit={submit}>
-      {errors ? <output>{errors.toString()}</output> /> : null}
-      <label htmlFor="email">
-        <span>Email</span>
-        <input type="email" name="email" required
-          onChange={(e) => setEmail(e.target.value)}
-        >
-      </label>
-      <label htmlFor="password">
-          <span>Password</span>
-          <input type="password" name="password" required
-              onChange={(e) => setPassword(e.target.value)}
-          >
-      </label>
-      <label htmlFor="bio">
-        <span>Bio</span>
-        <textarea type="text" name="bio"
-            onChange={(e) => setBio(e.target.value)}
-        ></textarea>
-      </label>
-      <input type="submit" value="Submit" />           
-    </form>
-  )
+    return (
+        <form onSubmit={submit}>
+            {errors ? <output>{errors.toString()}</output> /> : null}
+            <label htmlFor="email">
+                <span>Email</span>
+                <input type="email" name="email" required
+                    onChange={(e) => setEmail(e.target.value)}
+                >
+            </label>
+            <label htmlFor="password">
+                <span>Password</span>
+                <input type="password" name="password" required
+                    onChange={(e) => setPassword(e.target.value)}
+                >
+            </label>
+            <label htmlFor="bio">
+                <span>Bio</span>
+                <textarea type="text" name="bio"
+                    onChange={(e) => setBio(e.target.value)}
+                ></textarea>
+            </label>
+            <input type="submit" value="Submit" />           
+        </form>
+    )
 }
 ```
 
@@ -131,10 +131,10 @@ This leg of the user action can be implemented in various ways. Here we will use
 ```csharp
 public class User
 {
-  public string Email { get; set; }
-  // custom value object for password validation
-  public Password Password { get; set; }
-  public string? Bio { get; set; }
+    public string Email { get; set; }
+    // custom value object for password validation
+    public Password Password { get; set; }
+    public string? Bio { get; set; }
 };
 
 var app = builder.Build();
@@ -142,16 +142,16 @@ var app = builder.Build();
 // validation baked into .NET
 app.MapPost("/", async (User user, UserDb db) =>
 {
-  // check if email already exist
-  if ((await db.Users.Where(u => u.Email == user.Email)) is not null)
-  {
-    return Results.Conflict();
-  };
-  
-  db.Users.Add(user);
-  await db.SaveChangesAsync();
+    // check if email already exist
+    if ((await db.Users.Where(u => u.Email == user.Email)) is not null)
+    {
+        return Results.Conflict();
+    };
+    
+    db.Users.Add(user);
+    await db.SaveChangesAsync();
 
-  return Results.Create($"/{user.Id}", user);
+    return Results.Create($"/{user.Id}", user);
 });
 ```
 
@@ -167,4 +167,37 @@ However, this flexibility and no real ownership leads requires a large amount of
 
 Well, there is a solution for those developers, and it's called HTMX. 
 
-## Let's strategies
+## Brief HTMX introduction
+
+HTMX is relatively new. It's not another JS framework, even though it is built with JavaScript. In their words:
+
+> HTMX allows you to access AJAX, CSS Transitions, WebSockets and Server Sent Events directly in HTML, using attributes, so you can build modern user interfaces with the simplicity and power of hypertext
+
+I've been on a personal journey to find alternatives to the typically expected stack for personal use. Once I had setup the backend auth, and did some test-driven development on my API server, I did find myself getting overwhelmed at with syncing the data on the frontend application. Modern metaframeworks now push for server actions, using the standard abilities of the browser, but still can be clunky when using a separate backend application. Server actions to me also breaks some of the modularity that client side components offered, which reduces the share-ability. The main selling point is the reactivity of dom elements when events occur in the browser, to which HTMX looks to solve letting developers right logic such as validation once.
+
+Many documentation on HTMX, say you can avoid to write JavaScript, but they seemingly miss the point. It's not about writing no JavaScript, it's about relying more on web standards, treating the browser with the respect that it knows how to manipulate data natively. This rest of the example will actually use Deno (a JavaScript runtime) for the application code as a result.
+
+## Drafting the behaviour
+
+In the client/server model we had a frontend that the user would `GET` along with a form submission to `POST` so we know we need at least these two endpoints
+
+```ts
+const app = new Hono();
+
+app.get("/", async ({ html }) => html(
+    <Html>
+            <main>
+                <h1>Please submit your credentials</h1>
+                <form>
+                </form>
+            </main>
+    </Html>
+));
+app.post("/", async ({ html }) => html(
+    <form>
+    // todo
+    </form>
+));
+```
+
+The  reasons for using JavaScript is because I still think *JSX* is my favourite way to author templates. Popularised by *ReactJS* this 
