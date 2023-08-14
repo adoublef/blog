@@ -51,7 +51,9 @@ As stated in the setup, we know that can author how html views using JavaScript 
 
 ```js
 const CreateUser = z.object({
-  foobar: z.string().email(),
+    email: z.string().email(),
+    password: z.string()min(6).max(20).refine(passwordRegex),
+    bio: z.string().optional(),
 });
 
 function MyForm() {
@@ -126,7 +128,7 @@ Host: www.example.com
 Accept: */*
 Content-Type: application/json
 
-'{ "foobar": "foobar@mail.co" }'
+'{ "email": "foobar@mail.com", "password": "g!tHu6", "bio": "My name is foobar" }'
 ```
 
 We are telling the server that we have some data that we want them to handle. The server will route this to the endpoint that handles all request to `www.example.com/submit` to which we as developers will do something and finally response back with what we have done. 
