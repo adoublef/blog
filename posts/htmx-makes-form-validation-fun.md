@@ -13,7 +13,7 @@ In the typical web application there are going to be two places that need to be 
 
 - A *secure password* that will need to be challenging enough that cannot be easily guessable
 
-- A *display name* that will be shown in the users dashboard.
+- A *bio* that will be shown in the users homepage. This is entirely optional
 
 Though nowadays, it's strongly encouraged to outsource this task to a 3rd party authentication service, we are just highlighting a potential usecase. After reading this article, let your imagination run. 
 
@@ -25,41 +25,45 @@ The client, in our case the browser, has some built in validation that can be ha
 <form action="/" method="post">
     <label htmlFor="email">
         <span>Email</span>
-        <input type="email" name="email" required />
+        <input type="email" name="email" required>
     </label>
     <label htmlFor="password">
         <span>Password</span>
-        <input type="text" name="password" required />
+        <input type="text" name="password" required>
     </label>
-    <label htmlFor="email">
-        <span>Email</span>
-        <input type="email" name="email" required />
+    <label htmlFor="bio">
+        <span>Bio</span>
+        <textarea type="text" name="bio"></textarea>
     </label>
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Submit">
 </form>
 ```
 
-Here, without any additional files we can enforce the rule that our input data `foobar` must both be required and is of type email. This is called **client-side validation**
+Here, without any additional files we can enforce rules that our input data must follow.
 
-There are limitations though. What if an email already exists. What if we had a size limit to which `foobar` could not exceed? This is usually where it's easier to implement client-side validation using JavaScript. There will be an assumption made now that the authoring is done using one of the various JavaScript frontend libraries. While it is doable without, the tools I will be exploring, do have more support when one is used. One such tool is [Zod](https://zod.dev/)
+There are limitations though. What if an email already exists? What if the password is not string enough? This is usually where JavaScript gives it's first handout to improve the developer experience of creating validation rules. 
+
+There will be an assumption made now that the authoring is done using one of the various JavaScript frontend libraries. While it is do-able without, the tools I will be exploring, do have more support when a frontend library is used. One such tool I'll be focusing on is [Zod](https://zod.dev/)
 
 ### Validating the frontend with JavaScript 
 
 As stated in the setup, we know that can author how html views using JavaScript library, enabling a better developer experiences than using the DOM APIs directly. Here we have a *React component* that renders an unstyled form with a single input element.
 
 ```js
-const MyData = z.object({
+const CreateUser = z.object({
   foobar: z.string().email(),
 });
 
 function MyForm() {
-    const [foobar, setFoobar] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [bio, setBio] = useState("")
     const [errors, setErrors] = useState()
 
     const submit = (evt) => {
         evt.preventDefault()
 
-        const result = MyData.safeParse({ foobar })
+        const result = CreateUser.safeParse({ email, password, bio })
         if (!result.success) {
             // ...handle error case
             setErrors(result.error)
@@ -74,15 +78,34 @@ function MyForm() {
 
     return (
         <form onSubmit={submit}>
-            <label htmlFor="foobar">Foobar</label>
-            <input 
-                type="email"
-                name="foobar"
-                required
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            {errors ? <ErrorSpan error={errors} /> : null}
-            <input type="submit" value="Submit" />            
+            {errors ? <output>{errors.toString()}</output> /> : null}
+            <label htmlFor="email">
+                <span>Email</span>
+                <input 
+                    type="email"
+                    name="email"
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                >
+            </label>
+            <label htmlFor="password">
+                <span>Password</span>
+                <input 
+                    type="password"
+                    name="password"
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                >
+            </label>
+            <label htmlFor="bio">
+                <span>Bio</span>
+                <textarea 
+                    type="text"
+                    name="bio"
+                    onChange={(e) => setBio(e.target.value)}
+                ></textarea>
+            </label>
+            <input type="submit" value="Submit" />           
         </form>
     )
 }
@@ -112,16 +135,5 @@ This leg of the user action can be implemented in various ways. Here we will use
 
 
 ```csharp
-public record MyData(
-    public string Foobar);
 
-public class 
-
-app.MapPost
 ```
-
----
-
-## Resources
-
-https://web.dev/learn/forms/validation/#why-should-you-validate-your-forms
