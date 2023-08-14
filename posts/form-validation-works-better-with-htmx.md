@@ -123,7 +123,7 @@ Now that we have a basic form completed on our frontend, we need to send this ba
 The web is a bunch of browser clients, talking to servers, that interface some database. Database queries aren't common knowledge, so these servers map a lot of the complexity behind an endpoint ready for requesters to interact with. Essentially, a near enough definition to the term API (*Application Programming Interface*) & the wording here is deliberate. If we take a look at the following request
 
 ```http
-POST /submit
+POST /
 Host: www.example.com
 Accept: */*
 Content-Type: application/json
@@ -131,7 +131,7 @@ Content-Type: application/json
 '{ "email": "foobar@mail.com", "password": "g!tHu6", "bio": "My name is foobar" }'
 ```
 
-We are telling the server that we have some data that we want them to handle. The server will route this to the endpoint that handles all request to `www.example.com/submit` to which we as developers will do something and finally response back with what we have done. 
+We are telling the server that we have some data that we want them to handle. The server will route this to the endpoint that handles all request to `www.example.com` to which we as developers will do something and finally response back with what we have done. 
 
 This leg of the user action can be implemented in various ways. Here we will use a *C#*. Reasons being that it's quite important to express how **big tech companies are able to have various languages communicate.** For beginners we are often urged to stick with a JavaScript metaframework like *NextJS* or *SvelteJS* but not every task works well in those. Sometimes you just need a separate backend hosted elsewhere. This is another assumption therefore that we will go with for now, but will circle back to this point [later](#).
 
