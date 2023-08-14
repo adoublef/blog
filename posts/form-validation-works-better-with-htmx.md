@@ -186,18 +186,54 @@ const app = new Hono();
 
 app.get("/", async ({ html }) => html(
     <Html>
-            <main>
+            <main hx-boost="true">
                 <h1>Please submit your credentials</h1>
-                <form>
+                <form
+                    action="/" method="post"
+                    hx-target="this" hx-swap="outerHTML"
+                >
+                <input type="submit" value="Submit" />           
                 </form>
             </main>
     </Html>
 ));
 app.post("/", async ({ html }) => html(
-    <form>
-    // todo
+    // TODO handle request
+    <form
+        action="/" method="post"
+        hx-target="this" hx-swap="outerHTML"
+    >
+    <input type="submit" value="Submit" />           
     </form>
 ));
 ```
 
-The  reasons for using JavaScript is because I still think *JSX* is my favourite way to author templates. Popularised by *ReactJS* this 
+The reasons for using JavaScript is because I still think *JSX* is my favourite way to author templates. I enjoy using them in *ReactJS* and given this is a full-stack application I wanted accommodate my developer experience. It should be noted that other languages do have good templating frameworks that behave similar.
+
+Back on course, we do have some changes to discuss. Instead of returning JSON from the server, we return HTML. This isn't really that different to many metaframeworks that use **server-side rendering** to ship only HTML to the browser. I think that is good as it demystifies to me that HTMX is doing anything super crazy. On `POST` we send the form back to the browser, this is swapped in the DOM for the existing form (as indicated by the `hx-target` and `hx-swap` attributes). For me, I can see that it's not overly different to the *ReactJS* example at the top. In react after submitting the form we would be calling `useState` passing an empty string, to clear the form to be re-used with new data. We now need to replicate the validation behaviour from the client/server architecture. This step is simple as we are already on the server so we do what is usually expected from us
+
+```ts
+const schema = object({
+    email: string([minLength(3), email()]),
+    password: string([minLength(5), password()]),
+    bio: string([optional()]),
+});
+
+app.post("/", async ({ req, html }) => {
+    const [formData, formError] = parse(schema, await req.parseBody());
+    // TODO handle request
+    return (
+        <form
+            action="/" method="post"
+            hx-target="this" hx-swap="outerHTML"
+        >
+        <input type="submit" value="Submit" />           
+        </form>
+    )
+});
+```
+
+Here I am using a package called [Valibot](https://valibot.dev/), a spiritual successor to Zod. Reasons is that slightly easier for me to map the errors to my liking. 
+
+We call `Request.parseBody` however currently this will fail as there is no data because we haven't included the markup for the input fields. Let's fix that.
+
