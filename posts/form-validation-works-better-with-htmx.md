@@ -181,7 +181,7 @@ Many documentation on HTMX, say you can avoid to write JavaScript, but they seem
 
 In the client/server model we had a frontend that the user would `GET` along with a form submission to `POST` so we know we need at least these two endpoints
 
-```ts
+```js
 const app = new Hono();
 
 app.get("/", async ({ html }) => html(
@@ -197,6 +197,7 @@ app.get("/", async ({ html }) => html(
             </main>
     </Html>
 ));
+
 app.post("/", async ({ html }) => html(
     // TODO handle request
     <form
@@ -212,7 +213,7 @@ The reasons for using JavaScript is because I still think *JSX* is my favourite 
 
 Back on course, we do have some changes to discuss. Instead of returning JSON from the server, we return HTML. This isn't really that different to many metaframeworks that use **server-side rendering** to ship only HTML to the browser. I think that is good as it demystifies to me that HTMX is doing anything super crazy. On `POST` we send the form back to the browser, this is swapped in the DOM for the existing form (as indicated by the `hx-target` and `hx-swap` attributes). For me, I can see that it's not overly different to the *ReactJS* example at the top. In react after submitting the form we would be calling `useState` passing an empty string, to clear the form to be re-used with new data. We now need to replicate the validation behaviour from the client/server architecture. This step is simple as we are already on the server so we do what is usually expected from us
 
-```ts
+```js
 const schema = object({
     email: string([minLength(3), email()]),
     password: string([minLength(5), password()]),
