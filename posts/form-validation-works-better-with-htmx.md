@@ -137,5 +137,28 @@ This leg of the user action can be implemented in various ways. Here we will use
 
 
 ```csharp
+public class User
+{
+    public string Email { get; set; }
+    // custom value object for password validation
+    public Password Password { get; set; }
+    public string? Bio { get; set; }
+};
 
+var app = builder.Build();
+
+// validation baked into .NET
+app.MapPost("/", async (User user, UserDb db) =>
+{
+    // check if email already exist
+    if ((await db.Users.Where(u => u.Email == user.Email)) is not null)
+    {
+        return Results.Conflict();
+    };
+    
+    db.Users.Add(user);
+    await db.SaveChangesAsync();
+
+    return Results.Create($"/{user.Id}", user);
+});
 ```
