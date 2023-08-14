@@ -234,7 +234,21 @@ app.post("/", async ({ req, html }) => {
 });
 ```
 
-Here I am using a package called [Valibot](https://valibot.dev/), a spiritual successor to Zod. Reasons is that slightly easier for me to map the errors to my liking. 
+Here I am using a package called [Valibot](https://valibot.dev/), a spiritual successor to Zod. Reasons is that slightly easier for me to map the errors to my liking. We define the schema that we expect from the input, and call a parser method that will check it matches. Now this `parse` method is a custom wrapper around the libraries one and I will discuss further why I decided to do this.
 
 We call `Request.parseBody` however currently this will fail as there is no data because we haven't included the markup for the input fields. Let's fix that.
+
+For my text input fields, I want to be able to do the following
+
+1. Set/Get the input value
+
+1. Display any errors if present
+
+1. Reset the input field on a successful entry
+
+Let's address each of these
+
+<!-- ### Setters & Getters -->
+
+
 
