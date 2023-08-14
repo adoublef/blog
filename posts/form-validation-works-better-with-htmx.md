@@ -50,7 +50,7 @@ There will be an assumption made now that the authoring is done using one of the
 As stated in the setup, we know that can author how html views using JavaScript library, enabling a better developer experiences than using the DOM APIs directly. Here we have a *React component* that renders an unstyled form with a single input element.
 
 ```js
-const CreateUser = z.object({
+const User = z.object({
   email: z.string().email(),
   password: z.string()min(6).max(20).refine(passwordRegex),
   bio: z.string().optional(),
@@ -65,13 +65,13 @@ function MyForm() {
   const submit = (evt) => {
     evt.preventDefault()
 
-    const result = CreateUser.safeParse({ email, password, bio })
+    const result = User.safeParse({ email, password, bio })
     if (!result.success) {
       // ...handle error case
       setErrors(result.error)
     } else {
       // ...handle success case
-      await fetch("www.example.com/submit", {
+      await fetch("api.example.com/", {
         method: "post",
         body: JSON.stringify(result.data)
       })
@@ -116,7 +116,7 @@ The web is a bunch of browser clients, talking to servers, that interface some d
 
 ```http
 POST /
-Host: www.example.com
+Host: api.example.com
 Accept: */*
 Content-Type: application/json
 
@@ -125,7 +125,7 @@ Content-Type: application/json
 
 We are telling the server that we have some data that we want them to handle. The server will route this to the endpoint that handles all request to `www.example.com` to which we as developers will do something and finally response back with what we have done. 
 
-This leg of the user action can be implemented in various ways. Here we will use a *C#*. Reasons being that it's quite important to express how **big tech companies are able to have various languages communicate.** For beginners we are often urged to stick with a JavaScript metaframework like *NextJS* or *SvelteJS* but not every task works well in those. Sometimes you just need a separate backend hosted elsewhere. This is another assumption therefore that we will go with for now, but will circle back to this point [later](#).
+This leg of the user action can be implemented in various ways. Here we will use a *C#*. Reasons being that it's quite important to express how **big tech companies are able to have various languages communicate.** For beginners we are often urged to stick with a JavaScript metaframework like *NextJS* or *SvelteJS* but not every task works well in those. Sometimes you just need a separate backend hosted elsewhere. This is another assumption therefore that we will go with for now, but will circle back to this point [later](#so-what-is-the-problem).
 
 
 ```csharp
@@ -154,3 +154,17 @@ app.MapPost("/", async (User user, UserDb db) =>
   return Results.Create($"/{user.Id}", user);
 });
 ```
+
+Nothing here should be *too* controversial. We define a class for the body that will be included on the request called `User`. Essentially the same schema that is represented on the frontend. One key difference however is that in CSharp we can define custom value objects to use over primitives. Now if the body is valid, the type of `User.Password` will be a stronger type.
+
+In addition, we have the logic to check if the email already exists & return an error if so, else save to the database and return a `201`. 
+
+## So what is the problem?
+
+Well, it's not obvious from the snippets but its the extra cognitive effort it takes to maintain both the frontend and backend. It's popular to separate these two concerns allowing teams to exhaust their expertise in the areas they are strongest with, regrouping when either side needs a change to the schema. The other benefit is that the server is not imposing how clients decides to use the response data. Here we return the user as a json body, to be consumed however they feel.
+
+However, this flexibility and no real ownership leads requires a large amount of discipline amongst teams. A new feature may need a pair of developers to resolve from either side of the stack. It can get messy and if you are a solo developer, the context switching can be a burden. I think this is where you may prefer to use a single language for the full-stack & given that the browser's scripting language of choice is JavaScript, we see metaframeworks like *NextJS*, *SolidStart* & *SvelteKit* be very favourable. This has it's own qualms. We are now tied into JavaScript everywhere. There aer many arguments online regarding the fact most teams won't ever see the bottleneck of JavaScript, and this may be true but what if you just have a better development experience on the backend with another language like *CSharp, Go or Python*. You're comfortable with your type system, your tooling, your ecosystem. We still need to make a frontend but can we do this without the context switching, the addition complexity of maintaining two applications for one website?
+
+Well, there is a solution for those developers, and it's called HTMX. 
+
+## Let's strategies
