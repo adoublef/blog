@@ -1,3 +1,8 @@
+---
+title: Form
+publish_date: 2023-08-15
+---
+
 # Reducing 
 
 ## Introduction
