@@ -1,5 +1,5 @@
 ---
-title: Form
+title: htmx changed my approach to form validation
 publish_date: 2023-08-15
 ---
 
@@ -11,11 +11,11 @@ In the typical web application there are going to be two places that need to be 
 
 - An *email address* that adheres to the syntax as specified by **RFC 5322** and extended by **RFC 6532**
 
-- A secure password that will need to be challenging enough that cannot be easily guessable
+- A *secure password* that will need to be challenging enough that cannot be easily guessable
 
-- A display name that will be shown in the users dashboard.
+- A *display name* that will be shown in the users dashboard.
 
-Though nowadays, it's strongly encouraged to outsource this task to a 3rd party authentication service, we are just highlighting a potential usecase, and so everything is still transferable.
+Though nowadays, it's strongly encouraged to outsource this task to a 3rd party authentication service, we are just highlighting a potential usecase. After reading this article, let your imagination run. 
 
 ### HTML Validation
 
@@ -23,9 +23,18 @@ The client, in our case the browser, has some built in validation that can be ha
 
 ```html
 <form action="/" method="post">
-    <label htmlFor="foobar">Foobar</label>
-    <input type="email" name="foobar" required />
-
+    <label htmlFor="email">
+        <span>Email</span>
+        <input type="email" name="email" required />
+    </label>
+    <label htmlFor="password">
+        <span>Password</span>
+        <input type="text" name="password" required />
+    </label>
+    <label htmlFor="email">
+        <span>Email</span>
+        <input type="email" name="email" required />
+    </label>
     <input type="submit" value="Submit" />
 </form>
 ```
