@@ -1,5 +1,5 @@
 ---
-title: htmx changed my approach to form validation
+title: HTMX makes form validation fun
 publish_date: 2023-08-15
 ---
 
