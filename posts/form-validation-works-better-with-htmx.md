@@ -131,7 +131,7 @@ Content-Type: application/json
 
 We are telling the server that we have some data that we want them to handle. The server will route this to the endpoint that handles all request to `www.example.com` to which we as developers will do something and finally response back with what we have done. 
 
-This leg of the user action can be implemented in various ways. Here we will use a *C#*. Reasons being that it's quite important to express how **big tech companies are able to have various languages communicate.** For beginners we are often urged to stick with a JavaScript metaframework like *NextJS* or *SvelteJS* but not every task works well in those. Sometimes you just need a separate backend hosted elsewhere. This is another assumption therefore that we will go with for now, but will circle back to this point [later](#so-what-is-the-problem).
+This leg of the user action can be implemented in various ways. Here we will use a *C#*. Reasons being that it's quite important to express how **big tech companies are able to have various languages communicate.** For beginners we are often urged to stick with a JavaScript metaframework like [NextJS](https://nextjs.org/) or [SvelteKit](https://kit.svelte.dev/) but not every task works well in those. Sometimes you just need a separate backend hosted elsewhere. This is another assumption therefore that we will go with for now, but will circle back to this point [later](#so-what-is-the-problem).
 
 
 ```csharp
@@ -169,7 +169,7 @@ In addition, we have the logic to check if the email already exists & return an 
 
 Well, it's not obvious from the snippets but its the extra cognitive effort it takes to maintain both the frontend and backend. It's popular to separate these two concerns allowing teams to exhaust their expertise in the areas they are strongest with, regrouping when either side needs a change to the schema. The other benefit is that the server is not imposing how clients decides to use the response data. Here we return the user as a json body, to be consumed however they feel.
 
-However, this flexibility and no real ownership leads requires a large amount of discipline amongst teams. A new feature may need a pair of developers to resolve from either side of the stack. It can get messy and if you are a solo developer, the context switching can be a burden. I think this is where you may prefer to use a single language for the full-stack & given that the browser's scripting language of choice is JavaScript, we see metaframeworks like *NextJS*, *SolidStart* & *SvelteKit* be very favourable. This has it's own qualms. We are now tied into JavaScript everywhere. There aer many arguments online regarding the fact most teams won't ever see the bottleneck of JavaScript, and this may be true but what if you just have a better development experience on the backend with another language like *CSharp, Go or Python*. You're comfortable with your type system, your tooling, your ecosystem. We still need to make a frontend but can we do this without the context switching, the addition complexity of maintaining two applications for one website?
+However, this flexibility and no real ownership leads requires a large amount of discipline amongst teams. A new feature may need a pair of developers to resolve from either side of the stack. It can get messy and if you are a solo developer, the context switching can be a burden. I think this is where you may prefer to use a single language for the full-stack & given that the browser's scripting language of choice is JavaScript, we see metaframeworks like [NextJS](https://nextjs.org/), [SolidStart](https://start.solidjs.com/) & [SvelteKit](https://kit.svelte.dev/) be very favourable. This has it's own qualms. We are now tied into JavaScript everywhere. There aer many arguments online regarding the fact most teams won't ever see the bottleneck of JavaScript, and this may be true but what if you just have a better development experience on the backend with another language like *CSharp, Go or Python*. You're comfortable with your type system, your tooling, your ecosystem. We still need to make a frontend but can we do this without the context switching, the addition complexity of maintaining two applications for one website?
 
 Well, there is a solution for those developers, and it's called HTMX. 
 
@@ -217,7 +217,7 @@ app.post("/", async ({ html }) => html(
 
 The reasons for using JavaScript is because I still think *JSX* is my favourite way to author templates. I enjoy using them in *ReactJS* and given this is a full-stack application I wanted accommodate my developer experience. It should be noted that other languages do have good templating frameworks that behave similar.
 
-Back on course, we do have some changes to discuss. Instead of returning JSON from the server, we return HTML. This isn't really that different to many metaframeworks that use **server-side rendering** to ship only HTML to the browser. I think that is good as it demystifies to me that HTMX is doing anything super crazy. On `POST` we send the form back to the browser, this is swapped in the DOM for the existing form (as indicated by the `hx-target` and `hx-swap` attributes). For me, I can see that it's not overly different to the *ReactJS* example at the top. In react after submitting the form we would be calling `useState` passing an empty string, to clear the form to be re-used with new data. We now need to replicate the validation behaviour from the client/server architecture. This step is simple as we are already on the server so we do what is usually expected from us
+Back on course, we do have some changes to discuss. Instead of returning JSON from the server, we return HTML. This isn't really that different to many metaframeworks that use **server-side rendering** to ship only HTML to the browser. I think that is good as it demystifies to me that HTMX is doing anything super crazy. On `POST` we send the form back to the browser, this is swapped in the DOM for the existing form (as indicated by the [`hx-target`](https://htmx.org/attributes/hx-target/) and [`hx-swap`](https://htmx.org/attributes/hx-swap/) attributes). For me, I can see that it's not overly different to the *ReactJS* example at the top. In react after submitting the form we would be calling [`useState`](https://react.dev/reference/react/useState) passing an empty string, to clear the form to be re-used with new data. We now need to replicate the validation behaviour from the client/server architecture. This step is simple as we are already on the server so we do what is usually expected from us
 
 ```js
 const schema = object({
@@ -254,7 +254,9 @@ For my text input fields, I want to be able to do the following
 
 Let's address each of these.
 
-### Setters & Getters
+### Mutating the input value
+
+Something that I was already aware of when using using *SolidStart* is using an uncontrolled [`<input>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input) element and using the [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) to retrieve that data. A useful change in approach as when the number of inputs increase 
 
 
 
