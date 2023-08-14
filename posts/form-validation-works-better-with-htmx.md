@@ -23,19 +23,19 @@ The client, in our case the browser, has some built in validation that can be ha
 
 ```html
 <form action="/" method="post">
-    <label htmlFor="email">
-        <span>Email</span>
-        <input type="email" name="email" required>
-    </label>
-    <label htmlFor="password">
-        <span>Password</span>
-        <input type="text" name="password" required>
-    </label>
-    <label htmlFor="bio">
-        <span>Bio</span>
-        <textarea type="text" name="bio"></textarea>
-    </label>
-    <input type="submit" value="Submit">
+  <label htmlFor="email">
+    <span>Email</span>
+    <input type="email" name="email" required>
+  </label>
+  <label htmlFor="password">
+    <span>Password</span>
+    <input type="text" name="password" required>
+  </label>
+  <label htmlFor="bio">
+    <span>Bio</span>
+    <textarea type="text" name="bio"></textarea>
+  </label>
+  <input type="submit" value="Submit">
 </form>
 ```
 
@@ -51,65 +51,57 @@ As stated in the setup, we know that can author how html views using JavaScript 
 
 ```js
 const CreateUser = z.object({
-    email: z.string().email(),
-    password: z.string()min(6).max(20).refine(passwordRegex),
-    bio: z.string().optional(),
+  email: z.string().email(),
+  password: z.string()min(6).max(20).refine(passwordRegex),
+  bio: z.string().optional(),
 });
 
 function MyForm() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [bio, setBio] = useState("")
-    const [errors, setErrors] = useState()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [bio, setBio] = useState("")
+  const [errors, setErrors] = useState()
 
-    const submit = (evt) => {
-        evt.preventDefault()
+  const submit = (evt) => {
+    evt.preventDefault()
 
-        const result = CreateUser.safeParse({ email, password, bio })
-        if (!result.success) {
-            // ...handle error case
-            setErrors(result.error)
-        } else {
-            // ...handle success case
-            await fetch("www.example.com/submit", {
-                method: "post",
-                body: JSON.stringify(result.data)
-            })
-        }
+    const result = CreateUser.safeParse({ email, password, bio })
+    if (!result.success) {
+      // ...handle error case
+      setErrors(result.error)
+    } else {
+      // ...handle success case
+      await fetch("www.example.com/submit", {
+        method: "post",
+        body: JSON.stringify(result.data)
+      })
     }
+  }
 
-    return (
-        <form onSubmit={submit}>
-            {errors ? <output>{errors.toString()}</output> /> : null}
-            <label htmlFor="email">
-                <span>Email</span>
-                <input 
-                    type="email"
-                    name="email"
-                    required
-                    onChange={(e) => setEmail(e.target.value)}
-                >
-            </label>
-            <label htmlFor="password">
-                <span>Password</span>
-                <input 
-                    type="password"
-                    name="password"
-                    required
-                    onChange={(e) => setPassword(e.target.value)}
-                >
-            </label>
-            <label htmlFor="bio">
-                <span>Bio</span>
-                <textarea 
-                    type="text"
-                    name="bio"
-                    onChange={(e) => setBio(e.target.value)}
-                ></textarea>
-            </label>
-            <input type="submit" value="Submit" />           
-        </form>
-    )
+  return (
+    <form onSubmit={submit}>
+      {errors ? <output>{errors.toString()}</output> /> : null}
+      <label htmlFor="email">
+        <span>Email</span>
+        <input type="email" name="email" required
+          onChange={(e) => setEmail(e.target.value)}
+        >
+      </label>
+      <label htmlFor="password">
+          <span>Password</span>
+          <input type="password" name="password" required
+              onChange={(e) => setPassword(e.target.value)}
+          >
+      </label>
+      <label htmlFor="bio">
+        <span>Bio</span>
+        <textarea type="text" name="bio"
+            onChange={(e) => setBio(e.target.value)}
+        ></textarea>
+      </label>
+      <input type="submit" value="Submit" />           
+    </form>
+  )
 }
 ```
 
@@ -139,10 +131,10 @@ This leg of the user action can be implemented in various ways. Here we will use
 ```csharp
 public class User
 {
-    public string Email { get; set; }
-    // custom value object for password validation
-    public Password Password { get; set; }
-    public string? Bio { get; set; }
+  public string Email { get; set; }
+  // custom value object for password validation
+  public Password Password { get; set; }
+  public string? Bio { get; set; }
 };
 
 var app = builder.Build();
@@ -150,15 +142,15 @@ var app = builder.Build();
 // validation baked into .NET
 app.MapPost("/", async (User user, UserDb db) =>
 {
-    // check if email already exist
-    if ((await db.Users.Where(u => u.Email == user.Email)) is not null)
-    {
-        return Results.Conflict();
-    };
-    
-    db.Users.Add(user);
-    await db.SaveChangesAsync();
+  // check if email already exist
+  if ((await db.Users.Where(u => u.Email == user.Email)) is not null)
+  {
+    return Results.Conflict();
+  };
+  
+  db.Users.Add(user);
+  await db.SaveChangesAsync();
 
-    return Results.Create($"/{user.Id}", user);
+  return Results.Create($"/{user.Id}", user);
 });
 ```
