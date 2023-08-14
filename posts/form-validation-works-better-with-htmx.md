@@ -1,5 +1,5 @@
 ---
-title: HTMX makes form validation fun
+title: Form Validation works better with Htmx
 publish_date: 2023-08-15
 ---
 
