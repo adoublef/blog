@@ -1,5 +1,6 @@
 /** @jsx h */
 import blog, { ga, redirects, h, configureBlog } from "blog";
+import "https://esm.sh/prismjs@1.29.0/components/prism-csharp";
 
 blog({
     title: "adoublef",
