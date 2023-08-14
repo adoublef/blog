@@ -1,6 +1,12 @@
 ---
 title: Form Validation works better with Htmx
 publish_date: 2023-08-15
+tags:
+    - htmx
+    - deno
+    - dotnet
+    - reactjs
+    - solidjs
 ---
 
 If this is your first time visiting my site, here is where I discuss more on my development decisions when working on a project. I'm a fan of finding patterns, using patterns & learning patterns. Therefore, you are welcome to partake in a discussion related to the body of this blog.
@@ -246,9 +252,11 @@ For my text input fields, I want to be able to do the following
 
 1. Reset the input field on a successful entry
 
-Let's address each of these
+Let's address each of these.
 
-<!-- ### Setters & Getters -->
+### Setters & Getters
+
+
 
 
 
