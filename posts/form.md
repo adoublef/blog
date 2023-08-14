@@ -3,10 +3,6 @@ title: Form
 publish_date: 2023-08-15
 ---
 
-# Reducing 
-
-## Introduction
-
 If this is your first time visiting my site, here is where I discuss more on my development decisions when working on a project. I'm a fan of finding patterns, using patterns & learning patterns. Therefore, you are welcome to partake in a discussion related to the body of this blog.
 
 ## The `<form />` Element
